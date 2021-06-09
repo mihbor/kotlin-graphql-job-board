@@ -1,0 +1,56 @@
+import kotlinx.coroutines.MainScope
+import react.RProps
+import react.child
+import react.dom.div
+import react.dom.section
+import react.functionalComponent
+import react.router.dom.*
+import react.useState
+
+val scope = MainScope()
+
+val app = functionalComponent<RProps>{
+
+  val (isLoggedIn, setLoggedIn) = useState(auth.isLoggedIn())
+  val logIn: (RouteResultHistory) -> Unit = { history ->
+    setLoggedIn(true)
+    history.push("/")
+  }
+  val logOut: (RouteResultHistory) -> Unit = { history ->
+    auth.logOut()
+    setLoggedIn(false)
+    history.push("/")
+  }
+
+  browserRouter {
+    div {
+      child(navBar) {
+        attrs.isLoggedIn = isLoggedIn
+        attrs.onLogout = logOut
+      }
+      section("section") {
+        div("container") {
+          switch {
+            route("/", exact = true) {
+              child(jobBoard)
+            }
+            route("/companies/:companyId") {
+              child(companyDetail)
+            }
+            route("/jobs/new", exact = true) {
+              child(jobForm)
+            }
+            route("/jobs/:jobId") {
+              child(jobDetail)
+            }
+            route("/login", exact = true) {
+              child(loginForm) {
+                attrs.onLogin = logIn
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
