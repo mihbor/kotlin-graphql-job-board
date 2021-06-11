@@ -1,3 +1,6 @@
+import model.Company
+import model.Job
+
 val companies = listOf(
   Company(
     id = "company1",

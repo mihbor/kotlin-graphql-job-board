@@ -1,6 +1,6 @@
 package auth
 
-import Credentials
+import model.Credentials
 import kotlinx.browser.localStorage
 
 const val accessTokenKey = "accessToken";

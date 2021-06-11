@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 val kotlinVersion = "1.4.30"
-val serializationVersion = "1.0.1"
+val serializationVersion = "1.1.0"
 val preKotlinVersion = "pre.148-kotlin-$kotlinVersion"
 val ktorVersion = "1.6.0"
 
@@ -63,6 +63,7 @@ kotlin {
         implementation("io.ktor:ktor-html-builder:$ktorVersion")
         implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
         implementation("io.ktor:ktor-serialization:$ktorVersion")
+        implementation("com.expediagroup:graphql-kotlin-server:4.1.1")
       }
     }
     val jvmTest by getting {
@@ -91,7 +92,7 @@ kotlin {
 }
 
 application {
-  mainClass.set("ServerKt")
+  mainClass.set("ApplicationKt")
 }
 
 val isDevelopment = System.getenv().get("io.ktor.development") == "true"

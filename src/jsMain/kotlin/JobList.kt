@@ -1,3 +1,4 @@
+import model.Job
 import react.RProps
 import react.dom.div
 import react.dom.key

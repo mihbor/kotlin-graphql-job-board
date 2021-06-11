@@ -1,3 +1,5 @@
+import model.User
+
 val users = listOf(
   User(
     id = "BJrp-DudG",
