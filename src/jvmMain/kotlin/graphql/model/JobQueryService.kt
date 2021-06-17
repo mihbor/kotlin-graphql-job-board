@@ -1,8 +1,9 @@
 package graphql.model
 
 import com.expediagroup.graphql.server.operations.Query
-import model.Job
+import jobs
 
 class JobQueryService : Query {
-  fun jobs() = listOf<Job>()
+  fun jobs() = jobs
+  fun companies() = jobs
 }

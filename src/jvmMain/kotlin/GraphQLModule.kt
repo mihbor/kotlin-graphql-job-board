@@ -19,21 +19,18 @@ import graphql.getGraphQLServer
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.response.*
-import io.ktor.routing.Routing
-import io.ktor.routing.get
-import io.ktor.routing.post
-import io.ktor.routing.routing
+import io.ktor.routing.*
 
 fun Application.graphQLModule() {
     install(Routing)
 
     routing {
         post("graphql") {
-            handle(this.call)
+            handle(call)
         }
 
         get("playground") {
-            this.call.respondText(buildPlaygroundHtml("graphql", "subscriptions"), ContentType.Text.Html)
+            call.respondText(buildPlaygroundHtml("graphql", "subscriptions"), ContentType.Text.Html)
         }
     }
 }
