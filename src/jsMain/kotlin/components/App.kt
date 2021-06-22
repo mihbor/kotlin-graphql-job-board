@@ -1,10 +1,15 @@
+package components
+
 import kotlinx.coroutines.MainScope
 import react.RProps
 import react.child
 import react.dom.div
 import react.dom.section
 import react.functionalComponent
-import react.router.dom.*
+import react.router.dom.RouteResultHistory
+import react.router.dom.browserRouter
+import react.router.dom.route
+import react.router.dom.switch
 import react.useState
 
 val scope = MainScope()

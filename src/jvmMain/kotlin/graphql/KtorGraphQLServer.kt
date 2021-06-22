@@ -42,8 +42,8 @@ fun getGraphQLServer(mapper: ObjectMapper): KtorGraphQLServer {
     val requestHandler = object : GraphQLRequestHandler(graphQL) {
         override suspend fun executeRequest(request: GraphQLRequest, context: GraphQLContext?): GraphQLResponse<*> {
             return super.executeRequest(request, context).also {
-                log.debug(request.toString())
-                log.debug(it.toString())
+                log.info(request.toString())
+                log.info(it.toString())
             }
         }
     }

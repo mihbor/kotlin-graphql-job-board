@@ -1,3 +1,5 @@
+package components
+
 import kotlinx.css.LinearDimension
 import kotlinx.css.height
 import kotlinx.html.InputType

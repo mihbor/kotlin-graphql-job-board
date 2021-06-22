@@ -1,5 +1,6 @@
+package components
+
 import kotlinx.html.js.onClickFunction
-import org.w3c.dom.events.Event
 import react.RProps
 import react.dom.a
 import react.dom.div

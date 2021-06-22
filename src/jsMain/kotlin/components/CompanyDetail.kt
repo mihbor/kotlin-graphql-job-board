@@ -1,3 +1,7 @@
+package components
+
+import companies
+import propsToMap
 import react.RProps
 import react.dom.div
 import react.dom.h1

@@ -1,3 +1,5 @@
+package components
+
 import model.Job
 import react.RProps
 import react.dom.div
@@ -8,12 +10,12 @@ import react.functionalComponent
 import react.router.dom.routeLink
 
 external interface JobListProps: RProps {
-  var jobs: List<Job>
+  var jobs: Array<Job>?
 }
 
 val jobList = functionalComponent<JobListProps> { props ->
   ul("box") {
-    props.jobs.map { job ->
+    props.jobs?.map { job ->
       val title = job.company?.let{"${job.title} at ${job.company.name}"} ?: job.title
       li("media") {
         attrs.key = job.id
