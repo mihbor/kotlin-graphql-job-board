@@ -10,7 +10,7 @@ import react.functionalComponent
 import react.router.dom.routeLink
 
 external interface JobListProps: RProps {
-  var jobs: Array<Job>?
+  var jobs: List<Job>?
 }
 
 val jobList = functionalComponent<JobListProps> { props ->

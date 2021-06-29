@@ -1,4 +1,3 @@
-import components.JobsResponse
 import io.ktor.client.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
@@ -8,6 +7,7 @@ import kotlinx.browser.window
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import model.Credentials
+import model.Job
 
 val origin = window.location.origin // only needed until https://youtrack.jetbrains.com/issue/KTOR-453 is resolved
 
@@ -19,8 +19,14 @@ val http = HttpClient {
 }
 
 @Serializable
+data class Data(
+  val jobs: List<Job>? = null,
+  val job: Job? = null
+)
+
+@Serializable
 data class GraphQLResponse (
-  val data: JobsResponse,
+  val data: Data,
   val errors: Array<@Contextual Any>? = null
 )
 
