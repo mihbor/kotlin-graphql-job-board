@@ -23,17 +23,20 @@ val jobDetail = functionalComponent<RProps> {
     scope.launch {
       setJob(
         API.query(
-          """query { job(id: "$jobId") { id title description company { id name description } } }"""
-        ).data.job
+          "query Job(\$id: String!) { job(id: \$id) { id title description company { id name description } } }",
+          mapOf("id" to jobId)
+        ).data?.job
       )
     }
   }
 
-  div {
-    h1("title") { +(job?.title ?: "Not Found") }
-    h2("subtitle") {
-      job?.company?.let{ routeLink("/companies/${it.id}") { +it.name } }
+  job?.let{
+    div {
+      h1("title") { +job.title }
+      h2("subtitle") {
+        job.company?.let{ routeLink("/companies/${it.id}") { +it.name } }
+      }
+      div("box") { +job.description }
     }
-    div("box") { +(job?.description ?: "Not Found") }
   }
 }

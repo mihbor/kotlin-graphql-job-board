@@ -14,7 +14,7 @@ val jobBoard = functionalComponent<RProps> {
       setJobs(
         API.query(
           "query { jobs { id title description company { id name description } } }"
-        ).data.jobs
+        ).data?.jobs
       )
     }
   }

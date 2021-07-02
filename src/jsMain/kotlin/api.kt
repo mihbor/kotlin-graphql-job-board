@@ -1,10 +1,10 @@
-import io.ktor.client.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.request.*
-import io.ktor.http.*
+import io.ktor.client.HttpClient
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.request.post
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import kotlinx.browser.window
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import model.Credentials
 import model.Job
@@ -13,8 +13,9 @@ val origin = window.location.origin // only needed until https://youtrack.jetbra
 
 val http = HttpClient {
   install(JsonFeature) {
-    serializer = KotlinxSerializer()
+    serializer = KotlinxSerializer(json)
     acceptContentTypes += ContentType.Text.Plain
+
   }
 }
 
@@ -25,21 +26,26 @@ data class Data(
 )
 
 @Serializable
-data class GraphQLResponse (
-  val data: Data,
-  val errors: Array<@Contextual Any>? = null
+data class GraphQLResponse(
+  val data: Data? = null,
+  val errors: Array<GraphQLError>? = null
 )
 
 @Serializable
-data class GraphQLRequest (val query: String?)
+data class GraphQLError(
+  val message: String
+)
+
+@Serializable
+data class GraphQLRequest (val query: String?, val variables: Map<String, String?>? = null)
 
 object API {
   suspend fun login(credentials: Credentials) = http.post<String?>("$origin/login") {
     contentType(ContentType.Application.Json)
     body = credentials
   }
-  suspend inline fun query(query: String) = http.post<GraphQLResponse>("$origin/graphql") {
+  suspend inline fun query(query: String, variables: Map<String, String?>? = null) = http.post<GraphQLResponse>("$origin/graphql") {
     contentType(ContentType.Application.Json)
-    body = GraphQLRequest(query)
+    body = GraphQLRequest(query, variables)
   }
 }
