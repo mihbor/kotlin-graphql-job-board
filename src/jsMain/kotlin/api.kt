@@ -6,6 +6,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.browser.window
 import kotlinx.serialization.Serializable
+import model.Company
 import model.Credentials
 import model.Job
 
@@ -22,7 +23,9 @@ val http = HttpClient {
 @Serializable
 data class Data(
   val jobs: List<Job>? = null,
-  val job: Job? = null
+  val job: Job? = null,
+  val companies: List<Company>? = null,
+  val company: Company? = null
 )
 
 @Serializable

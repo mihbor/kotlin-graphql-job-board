@@ -6,15 +6,15 @@ import kotlinx.serialization.Serializable
 data class Company(
   val id: String,
   val name: String,
-  val description: String
+  val description: String? = null
 )
 
 @Serializable
 data class Job(
   val id: String,
   val title: String,
-  val description: String,
-  val company: Company?
+  val description: String? = null,
+  val company: Company? = null
 )
 
 @Serializable

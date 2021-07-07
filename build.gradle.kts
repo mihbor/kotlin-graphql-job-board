@@ -81,6 +81,7 @@ kotlin {
         implementation("io.ktor:ktor-client-js:$ktorVersion")
         implementation("io.ktor:ktor-client-json-js:$ktorVersion")
         implementation("io.ktor:ktor-client-serialization-js:$ktorVersion")
+
       }
     }
     val jsTest by getting {

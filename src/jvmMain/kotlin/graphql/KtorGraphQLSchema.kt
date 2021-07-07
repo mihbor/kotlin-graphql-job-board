@@ -19,7 +19,7 @@ package graphql
 import com.expediagroup.graphql.generator.SchemaGeneratorConfig
 import com.expediagroup.graphql.generator.TopLevelObject
 import com.expediagroup.graphql.generator.toSchema
-import graphql.model.JobQueryService
+import graphql.model.QueryService
 
 /**
  * Custom logic for how this Ktor server loads all the queries and configuration to create the [GraphQL] object
@@ -28,7 +28,7 @@ import graphql.model.JobQueryService
  */
 private val config = SchemaGeneratorConfig(supportedPackages = listOf("model", "graphql.model"))
 private val queries = listOf(
-    TopLevelObject(JobQueryService()),
+    TopLevelObject(QueryService()),
 )
 private val graphQLSchema = toSchema(config, queries)
 

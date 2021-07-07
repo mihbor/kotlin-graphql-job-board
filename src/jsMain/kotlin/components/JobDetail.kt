@@ -23,7 +23,7 @@ val jobDetail = functionalComponent<RProps> {
     scope.launch {
       setJob(
         API.query(
-          "query Job(\$id: String!) { job(id: \$id) { id title description company { id name description } } }",
+          "query Job(\$id: String!) { job(id: \$id) { id title description company { id name } } }",
           mapOf("id" to jobId)
         ).data?.job
       )
@@ -36,7 +36,7 @@ val jobDetail = functionalComponent<RProps> {
       h2("subtitle") {
         job.company?.let{ routeLink("/companies/${it.id}") { +it.name } }
       }
-      div("box") { +job.description }
+      job.description?.let{ div("box") { +it } }
     }
   }
 }
