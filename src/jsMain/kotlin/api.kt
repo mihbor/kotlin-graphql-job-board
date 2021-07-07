@@ -33,7 +33,14 @@ data class GraphQLResponse(
 
 @Serializable
 data class GraphQLError(
-  val message: String
+  val message: String,
+  val locations: Array<Location>
+)
+
+@Serializable
+data class Location(
+  val line: Int,
+  val column: Int
 )
 
 @Serializable
@@ -44,8 +51,17 @@ object API {
     contentType(ContentType.Application.Json)
     body = credentials
   }
-  suspend inline fun query(query: String, variables: Map<String, String?>? = null) = http.post<GraphQLResponse>("$origin/graphql") {
-    contentType(ContentType.Application.Json)
-    body = GraphQLRequest(query, variables)
+  suspend inline fun query(query: String, variables: Map<String, String?>? = null): GraphQLResponse {
+    val response = http.post<GraphQLResponse>("$origin/graphql") {
+      contentType(ContentType.Application.Json)
+      body = GraphQLRequest(query, variables)
+    }
+    if (response.errors.isNullOrEmpty()) {
+      return response
+    } else {
+      val message = response.errors.map(GraphQLError::message).joinToString("\n")
+      window.alert(message)
+      throw Error(message)
+    }
   }
 }
