@@ -32,9 +32,9 @@ val jobDetail = functionalComponent<RProps> {
 
   job?.let{
     div {
-      h1("title") { +job.title }
+      job.title?.let { h1("title") { +it } }
       h2("subtitle") {
-        job.company?.let{ routeLink("/companies/${it.id}") { +it.name } }
+        job.company?.let{ routeLink("/companies/${it.id}") { +(it.name ?: "No Name") } }
       }
       job.description?.let{ div("box") { +it } }
     }

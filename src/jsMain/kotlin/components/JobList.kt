@@ -20,7 +20,7 @@ val jobList = functionalComponent<JobListProps> { props ->
       li("media") {
         attrs.key = job.id
         div("media-content") {
-          routeLink("/jobs/${job.id}") { +title }
+          title?.let { routeLink("/jobs/${job.id}") { +it } }
         }
       }
     }

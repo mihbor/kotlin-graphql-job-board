@@ -1,23 +1,32 @@
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import io.ktor.application.*
-import io.ktor.features.*
-import io.ktor.http.*
-import io.ktor.http.content.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
-import io.ktor.serialization.*
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.features.CORS
+import io.ktor.features.Compression
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.gzip
+import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.content.resource
+import io.ktor.http.content.resources
+import io.ktor.http.content.static
+import io.ktor.request.receive
+import io.ktor.response.respondText
+import io.ktor.routing.Route
+import io.ktor.routing.post
+import io.ktor.routing.routing
+import io.ktor.serialization.json
 import model.Credentials
-import users
 
 const val jwtSecret = "Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt"
 
 fun Route.login() {
   post("/login") {
     val credentials = call.receive<Credentials>()
-    val user = users.find { it.email == credentials.email }
+    val user = data.users.find { it.email == credentials.email }
     if (user == null || user.password != credentials.password) {
       call.response.status(HttpStatusCode.Unauthorized)
     } else {

@@ -1,18 +1,23 @@
 package model
 
 import kotlinx.serialization.Serializable
+import kotlin.js.JsName
 
 @Serializable
 data class Company(
   val id: String,
-  val name: String,
+  val name: String? = null,
   val description: String? = null
-)
+) {
+  @JsName("nemo")
+  var jobs: List<Job>? = null
+  fun jobs() = jobs
+}
 
 @Serializable
 data class Job(
   val id: String,
-  val title: String,
+  val title: String? = null,
   val description: String? = null,
   val company: Company? = null
 )
