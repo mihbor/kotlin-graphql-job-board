@@ -33,7 +33,7 @@ object data {
 
   val companiesById = companies.map { it.id to it }.toMap()
 
-  val jobs = listOf(
+  val jobs = mutableListOf(
     Job(
       id = "rJKAbDd_z",
       company = companiesById["HJRa-DOuG"],
