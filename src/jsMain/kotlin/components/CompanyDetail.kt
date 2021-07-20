@@ -18,7 +18,7 @@ val companyDetail = functionalComponent<RProps> {
   useEffect(emptyList()) {
     scope.launch {
       setCompany(
-        API.query(
+        API.graphql(
           "query Company(\$id: String!) { company(id: \$id) { id name description jobs { id title } } }",
           mapOf("id" to companyId)
         ).data?.company

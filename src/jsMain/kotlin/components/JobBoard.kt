@@ -12,7 +12,7 @@ val jobBoard = functionalComponent<RProps> {
   useEffect(emptyList()) {
     scope.launch {
       setJobs(
-        API.query(
+        API.graphql(
           "query { jobs { id title description company { id name description } } }"
         ).data?.jobs
       )

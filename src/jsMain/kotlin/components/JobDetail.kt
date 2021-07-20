@@ -22,7 +22,7 @@ val jobDetail = functionalComponent<RProps> {
   useEffect(emptyList()) {
     scope.launch {
       setJob(
-        API.query(
+        API.graphql(
           "query Job(\$id: String!) { job(id: \$id) { id title description company { id name } } }",
           mapOf("id" to jobId)
         ).data?.job

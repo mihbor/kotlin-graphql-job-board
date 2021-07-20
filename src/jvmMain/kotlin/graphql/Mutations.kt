@@ -3,12 +3,13 @@ package graphql
 import com.expediagroup.graphql.server.operations.Mutation
 import data
 import model.Job
-import java.util.*
+import java.util.UUID
 
 class Mutations : Mutation {
-  fun createJob(companyId: String, title: String, description: String): String {
+  fun createJob(companyId: String, title: String, description: String): Job {
     val id = UUID.randomUUID().toString()
-    data.jobs.add(Job(id, title, description, data.companiesById[companyId]))
-    return id
+    val job = Job(id, title, description, data.companiesById[companyId])
+    data.jobs.add(job)
+    return job
   }
 }

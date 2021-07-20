@@ -54,7 +54,7 @@ object API {
     contentType(ContentType.Application.Json)
     body = credentials
   }
-  suspend inline fun query(query: String, variables: Map<String, String?>? = null): GraphQLResponse {
+  suspend inline fun graphql(query: String, variables: Map<String, String?>? = null): GraphQLResponse {
     val response = http.post<GraphQLResponse>("$origin/graphql") {
       contentType(ContentType.Application.Json)
       body = GraphQLRequest(query, variables)
