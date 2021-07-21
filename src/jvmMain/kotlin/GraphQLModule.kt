@@ -14,19 +14,50 @@
  * limitations under the License.
  */
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import graphql.getGraphQLServer
-import io.ktor.application.*
-import io.ktor.http.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.application.Application
+import io.ktor.application.ApplicationCall
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.auth.Authentication
+import io.ktor.auth.authenticate
+import io.ktor.auth.jwt.JWTPrincipal
+import io.ktor.auth.jwt.jwt
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
+import io.ktor.request.header
+import io.ktor.response.respond
+import io.ktor.response.respondText
+import io.ktor.routing.Routing
+import io.ktor.routing.get
+import io.ktor.routing.post
+import io.ktor.routing.routing
 
 fun Application.graphQLModule() {
     install(Routing)
-
+    install(Authentication) {
+        jwt("auth-jwt") {
+            realm = "myRealm"
+            verifier(
+                JWT
+                .require(Algorithm.HMAC256(jwtSecret))
+                .build()
+            )
+            validate { credential ->
+                credential.payload
+                    .takeIf { it.subject != "" }
+                    ?.let (::JWTPrincipal)
+            }
+        }
+    }
     routing {
-        post("graphql") {
-            handle(call)
+        authenticate("auth-jwt", optional = true) {
+            post("graphql") {
+                handle(call)
+            }
         }
 
         get("playground") {
@@ -43,6 +74,8 @@ val ktorGraphQLServer = getGraphQLServer(mapper)
  */
 suspend fun handle(applicationCall: ApplicationCall) {
     // Execute the query against the schema
+    val auth = applicationCall.request.header("Authorization")
+    println(auth)
     val result = ktorGraphQLServer.execute(applicationCall.request)
 
     if (result != null) {
