@@ -17,6 +17,7 @@ object data {
       companyId = "SJV0-wdOM"
     )
   )
+  val usersById = users.map{ it.id to it }.toMap()
 
   val companies = listOf(
     Company(

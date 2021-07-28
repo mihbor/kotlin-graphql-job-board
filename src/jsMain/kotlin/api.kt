@@ -1,17 +1,30 @@
+import auth.accessToken
+import auth.isLoggedIn
 import io.ktor.client.HttpClient
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.request.headers
 import io.ktor.client.request.post
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders.Authorization
 import io.ktor.http.contentType
 import kotlinx.browser.window
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import model.Company
 import model.Credentials
 import model.Job
+import model.Token
 
 val origin = window.location.origin // only needed until https://youtrack.jetbrains.com/issue/KTOR-453 is resolved
-
+val json = Json {
+  isLenient = true
+  ignoreUnknownKeys = true
+  allowSpecialFloatingPointValues = true
+  useArrayPolymorphism = true
+  allowStructuredMapKeys = true
+  encodeDefaults = false
+}
 val http = HttpClient {
   install(JsonFeature) {
     serializer = KotlinxSerializer(json)
@@ -50,7 +63,7 @@ data class Location(
 data class GraphQLRequest (val query: String?, val variables: Map<String, String?>? = null)
 
 object API {
-  suspend fun login(credentials: Credentials) = http.post<String?>("$origin/login") {
+  suspend fun login(credentials: Credentials) = http.post<Token>("$origin/login") {
     contentType(ContentType.Application.Json)
     body = credentials
   }
@@ -58,6 +71,11 @@ object API {
     val response = http.post<GraphQLResponse>("$origin/graphql") {
       contentType(ContentType.Application.Json)
       body = GraphQLRequest(query, variables)
+      if (isLoggedIn()) {
+        headers {
+          append(Authorization, "Bearer $accessToken")
+        }
+      }
     }
     if (response.errors.isNullOrEmpty()) {
       return response

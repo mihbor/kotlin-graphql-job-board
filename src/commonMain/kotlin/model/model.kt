@@ -23,6 +23,11 @@ data class Job(
 )
 
 @Serializable
+data class Token(
+  val token: String
+)
+
+@Serializable
 data class Credentials(
   val email: String,
   val password: String

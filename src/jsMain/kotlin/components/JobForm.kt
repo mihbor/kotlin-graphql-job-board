@@ -28,7 +28,7 @@ val jobForm = functionalComponent<RProps> {
     console.log("title: $title, description: $description")
     scope.launch {
       val job = API.graphql("""mutation createJob{
-        job: createJob(companyId: "SJV0-wdOM" title: "$title" description: "$description") {
+        job: createJob(title: "$title" description: "$description") {
           id title description company {
             id name description
           }

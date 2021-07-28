@@ -20,6 +20,7 @@ import io.ktor.routing.post
 import io.ktor.routing.routing
 import io.ktor.serialization.json
 import model.Credentials
+import model.Token
 
 const val jwtSecret = "Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt"
 
@@ -33,7 +34,7 @@ fun Route.login() {
       val token = JWT.create()
         .withSubject(user.id)
         .sign(Algorithm.HMAC256(jwtSecret))
-      call.respond(mapOf("token" to token))
+      call.respond(Token(token))
     }
   }
 }

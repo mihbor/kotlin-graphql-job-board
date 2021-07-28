@@ -6,14 +6,15 @@ import model.Job
 import java.util.UUID
 
 class Mutations : Mutation {
-  fun createJob(companyId: String, title: String, description: String, context: AuthContext): Job {
-    println(context)
+  fun createJob(title: String, description: String, context: AuthContext): Job {
+    println(context.principal)
     if (context.principal == null) {
       throw Exception("Forbidden")
+    } else {
+      val id = UUID.randomUUID().toString()
+      val job = Job(id, title, description, data.companiesById[data.usersById[context.principal.subject!!]!!.companyId])
+      data.jobs.add(job)
+      return job
     }
-    val id = UUID.randomUUID().toString()
-    val job = Job(id, title, description, data.companiesById[companyId])
-    data.jobs.add(job)
-    return job
   }
 }
