@@ -1,4 +1,6 @@
 @file:Suppress("INTERFACE_WITH_SUPERCLASS", "OVERRIDING_FINAL_MEMBER", "RETURN_TYPE_MISMATCH_ON_OVERRIDE", "CONFLICTING_OVERLOADS")
+@file:JsModule("apollo-link")
+@file:JsNonModule
 
 package apollo
 
@@ -17,7 +19,7 @@ external open class ApolloLink(request: RequestHandler = definedExternally) {
 
     companion object {
         var empty: Any
-        var from: Any
+        fun from(links: Array<ApolloLink>): ApolloLink
         var split: Any
         var execute: Any
     }

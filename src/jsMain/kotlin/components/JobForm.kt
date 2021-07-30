@@ -1,12 +1,15 @@
 package components
 
-import API
+import Apollo
+import json
 import kotlinx.coroutines.launch
 import kotlinx.css.LinearDimension
 import kotlinx.css.height
 import kotlinx.html.InputType
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
+import kotlinx.serialization.json.decodeFromDynamic
+import model.Job
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLTextAreaElement
 import org.w3c.dom.events.Event
@@ -33,14 +36,18 @@ val jobForm = functionalComponent<RProps> {
     event.preventDefault()
     console.log("title: $title, description: $description")
     scope.launch {
-      val job = API.graphql("""mutation createJob{
-        job: createJob(title: "$title" description: "$description") {
-          id title description company {
-            id name description
-          }
-        }
-      }""").data?.job
-      job?.let{
+      val job = json.decodeFromDynamic<Job>(
+        Apollo.mutate(
+          """mutation createJob{
+            job: createJob(title: "$title" description: "$description") {
+              id title description company {
+                id name description
+              }
+            }
+          }"""
+        ).data?.job
+      )
+      job.let{
         history.push("/jobs/${it.id}")
       }
     }

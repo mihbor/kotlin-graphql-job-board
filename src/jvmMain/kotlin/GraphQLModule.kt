@@ -75,7 +75,6 @@ val ktorGraphQLServer = getGraphQLServer(mapper)
 suspend fun handle(applicationCall: ApplicationCall) {
     // Execute the query against the schema
     val auth = applicationCall.request.header("Authorization")
-    println(auth)
     val result = ktorGraphQLServer.execute(applicationCall.request)
 
     if (result != null) {
