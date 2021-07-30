@@ -1,7 +1,9 @@
 package components
 
-import API
+import Apollo
+import json
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.decodeFromDynamic
 import model.Job
 import propsToMap
 import react.RProps
@@ -22,10 +24,13 @@ val jobDetail = functionalComponent<RProps> {
   useEffect(emptyList()) {
     scope.launch {
       setJob(
-        API.graphql(
-          "query Job(\$id: String!) { job(id: \$id) { id title description company { id name } } }",
-          mapOf("id" to jobId)
-        ).data?.job
+        json.decodeFromDynamic<Job>(
+          Apollo.query(
+            "query Job(\$id: String!) { job(id: \$id) { id title description company { id name } } }"
+          ) {
+            id = jobId
+          }.data?.job
+        )
       )
     }
   }

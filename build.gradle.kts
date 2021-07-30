@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
-val kotlinVersion = "1.4.30"
+val kotlinVersion = "1.5.0"
 val serializationVersion = "1.1.0"
-val preKotlinVersion = "pre.148-kotlin-$kotlinVersion"
+val preKotlinVersion = "pre.156-kotlin-$kotlinVersion"
 val ktorVersion = "1.6.0"
 
 plugins {
@@ -73,15 +73,17 @@ kotlin {
     }
     val jsMain by getting {
       dependencies {
-        implementation("org.jetbrains:kotlin-react:17.0.1-$preKotlinVersion")
-        implementation("org.jetbrains:kotlin-react-dom:17.0.1-$preKotlinVersion")
+        implementation("org.jetbrains:kotlin-react:17.0.2-$preKotlinVersion")
+        implementation("org.jetbrains:kotlin-react-dom:17.0.2-$preKotlinVersion")
         implementation("org.jetbrains:kotlin-react-router-dom:5.2.0-$preKotlinVersion")
-        implementation("org.jetbrains:kotlin-styled:5.2.1-$preKotlinVersion")
+        implementation("org.jetbrains:kotlin-styled:5.3.0-$preKotlinVersion")
 
         implementation("io.ktor:ktor-client-js:$ktorVersion")
         implementation("io.ktor:ktor-client-json-js:$ktorVersion")
         implementation("io.ktor:ktor-client-serialization-js:$ktorVersion")
 
+        implementation(npm("apollo-boost", "0.4.9"))
+        implementation(npm("graphql", "15.5.1"))
       }
     }
     val jsTest by getting {

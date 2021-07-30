@@ -11,12 +11,18 @@ import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLTextAreaElement
 import org.w3c.dom.events.Event
 import react.RProps
-import react.dom.*
+import react.dom.button
+import react.dom.div
+import react.dom.form
+import react.dom.h1
+import react.dom.input
+import react.dom.label
+import react.dom.value
 import react.functionalComponent
 import react.router.dom.useHistory
 import react.useState
 import styled.css
-import styled.styledTextArea as textArea
+import styled.styledTextarea as textarea
 
 val jobForm = functionalComponent<RProps> {
   val (title, setTitle) = useState("")
@@ -58,7 +64,7 @@ val jobForm = functionalComponent<RProps> {
           div("field") {
             label("label") { +"Description" }
             div("control") {
-              textArea {
+              textarea {
                 css {
                   classes = mutableListOf("input")
                   height = LinearDimension("10em")

@@ -1,7 +1,9 @@
 package components
 
-import API
+import Apollo
+import json
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.decodeFromDynamic
 import model.Job
 import react.*
 import react.dom.div
@@ -12,9 +14,11 @@ val jobBoard = functionalComponent<RProps> {
   useEffect(emptyList()) {
     scope.launch {
       setJobs(
-        API.graphql(
-          "query { jobs { id title description company { id name description } } }"
-        ).data?.jobs
+        json.decodeFromDynamic<List<Job>>(
+          Apollo.query(
+            "query { jobs { id title description company { id name description } } }"
+          ).data?.jobs
+        )
       )
     }
   }
