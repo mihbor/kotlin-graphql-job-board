@@ -16,7 +16,7 @@ val jobBoard = functionalComponent<RProps> {
       setJobs(
         json.decodeFromDynamic<List<Job>>(
           Apollo.query(
-            "query { jobs { id title description company { id name description } } }",
+            "query { jobs { ...JobFragment } } $jobFragment",
             fetchPolicy = "no-cache"
           ).data?.jobs
         )

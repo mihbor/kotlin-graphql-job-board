@@ -17,7 +17,13 @@ import react.router.dom.useRouteMatch
 import react.useEffect
 import react.useState
 
-val jobQuery = gql("query Job(\$id: String!) { job(id: \$id) { id title description company { id name description } } }")
+val jobFragment = """fragment JobFragment on Job {
+  id title description company {
+      id name description
+    }
+}"""
+
+val jobQuery = gql("query Job(\$id: String!) { job(id: \$id) { ...JobFragment } } $jobFragment")
 
 val jobDetail = functionalComponent<RProps> {
   val match = useRouteMatch<RProps>()!!

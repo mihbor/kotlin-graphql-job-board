@@ -41,11 +41,9 @@ val jobForm = functionalComponent<RProps> {
         Apollo.mutate(
           """mutation createJob{
             job: createJob(title: "$title" description: "$description") {
-              id title description company {
-                id name description
-              }
+              ...JobFragment
             }
-          }""",
+          } $jobFragment""",
           update = { cache, result ->
 //            console.log("Writing ${result.data} for query ${components.jobQuery} with param ${result.data.job.id}")
             cache.writeQuery(WriteQueryOptions(jobQuery, result.data) {
