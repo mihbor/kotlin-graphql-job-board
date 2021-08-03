@@ -1,6 +1,7 @@
 package components
 
 import Apollo
+import graphql.gql
 import json
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.decodeFromDynamic
@@ -16,6 +17,8 @@ import react.router.dom.useRouteMatch
 import react.useEffect
 import react.useState
 
+val jobQuery = gql("query Job(\$id: String!) { job(id: \$id) { id title description company { id name description } } }")
+
 val jobDetail = functionalComponent<RProps> {
   val match = useRouteMatch<RProps>()!!
   val jobId = propsToMap(match.params)["jobId"]
@@ -25,9 +28,7 @@ val jobDetail = functionalComponent<RProps> {
     scope.launch {
       setJob(
         json.decodeFromDynamic<Job>(
-          Apollo.query(
-            "query Job(\$id: String!) { job(id: \$id) { id title description company { id name } } }"
-          ) {
+          Apollo.query(jobQuery) {
             id = jobId
           }.data?.job
         )

@@ -1,6 +1,7 @@
 package components
 
 import Apollo
+import WriteQueryOptions
 import json
 import kotlinx.coroutines.launch
 import kotlinx.css.LinearDimension
@@ -44,7 +45,13 @@ val jobForm = functionalComponent<RProps> {
                 id name description
               }
             }
-          }"""
+          }""",
+          update = { cache, result ->
+//            console.log("Writing ${result.data} for query ${components.jobQuery} with param ${result.data.job.id}")
+            cache.writeQuery(WriteQueryOptions(jobQuery, result.data) {
+              id = result.data.job.id
+            })
+          }
         ).data?.job
       )
       job.let{
