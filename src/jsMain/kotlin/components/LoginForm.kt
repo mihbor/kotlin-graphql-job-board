@@ -28,9 +28,13 @@ val loginForm = functionalComponent<LoginFormProps> { props ->
   val onSubmit: (Event) -> Unit = { event ->
     event.preventDefault()
     scope.launch {
-      logIn(email, password)?.let {
-        props.onLogin(history)
-      } ?: setError(true)
+      try {
+        logIn(email, password).let {
+          props.onLogin(history)
+        }
+      } catch (e: Exception) {
+        setError(true)
+      }
     }
   }
 

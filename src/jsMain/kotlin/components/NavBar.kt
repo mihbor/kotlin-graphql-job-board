@@ -28,7 +28,7 @@ val navBar = functionalComponent<NavBarProps> { props ->
         }
         a(classes = "navbar-item") {
           attrs.onClickFunction = { event ->
-            props.onLogout.invoke(history)
+            props.onLogout(history)
           }
           +"Log out"
         }

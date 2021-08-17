@@ -12,6 +12,6 @@ fun isLoggedIn() = !localStorage.getItem(accessTokenKey).isNullOrEmpty()
 
 suspend fun logIn(email: String, password: String) =
   API.login(Credentials(email, password))
-    ?.also{ localStorage.setItem(accessTokenKey, it.token) }
+    .also{ localStorage.setItem(accessTokenKey, it.token) }
 
 fun logOut() = localStorage.removeItem(accessTokenKey)
