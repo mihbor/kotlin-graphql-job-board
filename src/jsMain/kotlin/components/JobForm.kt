@@ -29,8 +29,8 @@ import styled.css
 import styled.styledTextarea as textarea
 
 val jobForm = functionalComponent<RProps> {
-  val (title, setTitle) = useState("")
-  val (description, setDescription) = useState("")
+  var title by useState("")
+  var description by useState("")
   val history = useHistory()
 
   val submit: (Event) -> Unit = { event ->
@@ -68,7 +68,7 @@ val jobForm = functionalComponent<RProps> {
               input(type = InputType.text, classes = "input", name = "title") {
                 attrs {
                   value = title
-                  onChangeFunction = { setTitle((it.target as HTMLInputElement).value) }
+                  onChangeFunction = { title = (it.target as HTMLInputElement).value }
                 }
               }
             }
@@ -84,7 +84,7 @@ val jobForm = functionalComponent<RProps> {
                 attrs {
                   name = "description"
                   value = description
-                  onChangeFunction = { setDescription((it.target as HTMLTextAreaElement).value) }
+                  onChangeFunction = { description = (it.target as HTMLTextAreaElement).value }
                 }
               }
             }

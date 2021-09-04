@@ -10,16 +10,14 @@ import react.dom.div
 import react.dom.h1
 
 val jobBoard = functionalComponent<RProps> {
-  val (jobs, setJobs) = useState(null as List<Job>?)
+  var jobs by useState(null as List<Job>?)
   useEffect(emptyList()) {
     scope.launch {
-      setJobs(
-        json.decodeFromDynamic<List<Job>>(
-          Apollo.query(
-            "query { jobs { ...JobFragment } } $jobFragment",
-            fetchPolicy = "no-cache"
-          ).data?.jobs
-        )
+      jobs = json.decodeFromDynamic<List<Job>>(
+        Apollo.query(
+          "query { jobs { ...JobFragment } } $jobFragment",
+          fetchPolicy = "no-cache"
+        ).data?.jobs
       )
     }
   }

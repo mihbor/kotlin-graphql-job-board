@@ -15,29 +15,28 @@ import react.router.dom.useRouteMatch
 val companyDetail = functionalComponent<RProps> {
   val match = useRouteMatch<RProps>()!!
   val companyId = propsToMap(match.params)["companyId"]
-  val (company, setCompany) = useState(null as Company?)
+  var company by useState(null as Company?)
 
   useEffect(emptyList()) {
     scope.launch {
-      setCompany(
-        json.decodeFromDynamic<Company>(
-          Apollo.query(
-            "query Company(\$id: String!) { company(id: \$id) { id name description jobs { id title } } }",
-          ) {
-            id = companyId
-          }.data?.company
-        )
+      company =  json.decodeFromDynamic<Company>(
+        Apollo.query(
+          "query Company(\$id: String!) { company(id: \$id) { id name description jobs { id title } } }",
+          fetchPolicy = "no-cache"
+        ) {
+          id = companyId
+        }.data?.company
       )
     }
   }
 
   div {
     company?.let {
-      h1("title") { +(company.name ?: "") }
-      div("box") { +(company.description ?: "") }
-      h5("title is-5") { +"Jobs at ${company.name}" }
+      h1("title") { +(it.name ?: "") }
+      div("box") { +(it.description ?: "") }
+      h5("title is-5") { +"Jobs at ${it.name}" }
       child(jobList) {
-        attrs.jobs = company.jobs
+        attrs.jobs = it.jobs
       }
     } ?: h1("title") { +"Company not found" }
   }

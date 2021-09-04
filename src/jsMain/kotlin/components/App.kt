@@ -16,14 +16,14 @@ val scope = MainScope()
 
 val app = functionalComponent<RProps>{
 
-  val (isLoggedIn, setLoggedIn) = useState(auth.isLoggedIn())
+  var isLoggedIn by useState(auth.isLoggedIn())
   val logIn: (RouteResultHistory) -> Unit = { history ->
-    setLoggedIn(true)
+    isLoggedIn = true
     history.push("/")
   }
   val logOut: (RouteResultHistory) -> Unit = { history ->
     auth.logOut()
-    setLoggedIn(false)
+    isLoggedIn = false
     history.push("/")
   }
 

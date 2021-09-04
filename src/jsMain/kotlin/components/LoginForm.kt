@@ -20,9 +20,9 @@ external interface LoginFormProps: RProps {
 }
 
 val loginForm = functionalComponent<LoginFormProps> { props ->
-  val (email, setEmail) = useState("")
-  val (password, setPassword) = useState("")
-  val (error, setError) = useState(false)
+  var email by useState("")
+  var password by useState("")
+  var error by useState(false)
   val history = useHistory()
 
   val onSubmit: (Event) -> Unit = { event ->
@@ -33,7 +33,7 @@ val loginForm = functionalComponent<LoginFormProps> { props ->
           props.onLogin(history)
         }
       } catch (e: Exception) {
-        setError(true)
+        error = true
       }
     }
   }
@@ -47,7 +47,7 @@ val loginForm = functionalComponent<LoginFormProps> { props ->
           attrs {
             name = "email"
             value = email
-            onChangeFunction = { setEmail((it.target as HTMLInputElement).value) }
+            onChangeFunction = { email = (it.target as HTMLInputElement).value }
           }
         }
       }
@@ -58,7 +58,7 @@ val loginForm = functionalComponent<LoginFormProps> { props ->
         attrs {
           name = "password"
           value = password
-          onChangeFunction = { setPassword((it.target as HTMLInputElement).value) }
+          onChangeFunction = { password = (it.target as HTMLInputElement).value }
         }
       }
     }

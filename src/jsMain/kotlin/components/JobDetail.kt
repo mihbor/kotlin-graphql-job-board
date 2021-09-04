@@ -28,27 +28,25 @@ val jobQuery = gql("query Job(\$id: String!) { job(id: \$id) { ...JobFragment } 
 val jobDetail = functionalComponent<RProps> {
   val match = useRouteMatch<RProps>()!!
   val jobId = propsToMap(match.params)["jobId"]
-  val (job, setJob) = useState(null as Job?)
+  var job by useState(null as Job?)
 
   useEffect(emptyList()) {
     scope.launch {
-      setJob(
-        json.decodeFromDynamic<Job>(
-          Apollo.query(jobQuery) {
-            id = jobId
-          }.data?.job
-        )
+      job = json.decodeFromDynamic<Job>(
+        Apollo.query(jobQuery) {
+          id = jobId
+        }.data?.job
       )
     }
   }
 
   job?.let{
     div {
-      job.title?.let { h1("title") { +it } }
+      it.title?.let { h1("title") { +it } }
       h2("subtitle") {
-        job.company?.let{ routeLink("/companies/${it.id}") { +(it.name ?: "No Name") } }
+        it.company?.let{ routeLink("/companies/${it.id}") { +(it.name ?: "No Name") } }
       }
-      job.description?.let{ div("box") { +it } }
+      it.description?.let{ div("box") { +it } }
     }
   }
 }
